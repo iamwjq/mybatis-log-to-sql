@@ -6,5 +6,15 @@
  * Detailed information about configuring a multi-project build in Gradle can be found
  * in the user manual at https://docs.gradle.org/5.2.1/userguide/multi_project_builds.html
  */
+pluginManagement {
+    resolutionStrategy {
+        eachPlugin {
+            // 因为没有使用到Plugin Marker Artifact，所以必须自定义resolve策略
+            if (requested.id.namespace == 'edu.sc.seis') {
+                useModule("edu.sc.seis.gradle:launch4j:${requested.version}")
+            }
+        }
+    }
+}
 
 rootProject.name = 'mybatis-log-to-sql'
