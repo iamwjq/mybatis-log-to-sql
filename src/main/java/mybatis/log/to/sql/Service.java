@@ -3,15 +3,14 @@ package mybatis.log.to.sql;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Observable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 业务逻辑
+ * @author wjq
+ * @since 2022/11/16
  */
-public class Model extends Observable {
-
+public class Service {
     public static final Pattern NULL_PATTERN = Pattern.compile("null((\\, )|\\z)");
     public static final Pattern TYPE_PATTERN = Pattern.compile("\\((\\p{Upper}\\p{Alpha}*)\\)((\\, )|\\z)");
 
@@ -19,13 +18,8 @@ public class Model extends Observable {
 
     String[] logs;
 
-    public void convertTo(String[] logs){
-        this.logs = logs;
-        setChanged();
-        notifyObservers();
-    }
-
-    public String convert() {
+    public String convert(String sourceLog) {
+        logs = sourceLog.split("\n");
         if (logs.length >= 2) {
             String preparing = null;
             String parameters = null;
@@ -69,6 +63,7 @@ public class Model extends Observable {
         return "日志格式不正确";
     }
 
+
     String indexOf(String str, String pattern) {
         int parIndex = str.indexOf(pattern);
         if (parIndex != -1) {
@@ -78,7 +73,7 @@ public class Model extends Observable {
     }
 
     List<Param> parseParam(String log) {
-        List<Param> result = new ArrayList<Param>();
+        List<Param> result = new ArrayList<>();
         Matcher nullMatcher = NULL_PATTERN.matcher(log);
         Matcher typeMatcher = TYPE_PATTERN.matcher(log);
         int start = 0;
