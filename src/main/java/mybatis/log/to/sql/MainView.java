@@ -52,7 +52,11 @@ public class MainView {
                 }
 
                 public void removeUpdate(DocumentEvent e) {
-
+                    try {
+                        sqlTextArea.getDocument().remove(0, sqlTextArea.getDocument().getLength());
+                    } catch (BadLocationException ex) {
+                        ex.printStackTrace();
+                    }
                 }
 
                 public void changedUpdate(DocumentEvent e) {
